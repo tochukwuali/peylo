@@ -1,0 +1,53 @@
+.normal {
+  transition: 850ms;
+  left: -100%;
+}
+
+.normal.active {
+  left: 0;
+  transition: 350ms;
+}
+
+label {
+  font-size: 13px;
+  color: rgb(156 163 175);
+  margin-bottom: 10px;
+  display: block;
+}
+
+input[type="checkbox"] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  /* Remove most all native input styles */
+  appearance: none;
+  /* For iOS < 15 */
+  background-color: rgb(230, 236, 252);
+  /* Not removed via appearance */
+  margin: 0;
+
+  font: inherit;
+  color: gray;
+  width: 1em;
+  height: 1em;
+  border: 0.45em solid rgb(243 244 246);
+  border-radius: 0.2em;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  border-radius: 0.2em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  /* Windows High Contrast Mode */
+  background-color: #4a90e2;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
