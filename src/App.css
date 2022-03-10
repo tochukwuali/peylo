@@ -29,7 +29,7 @@ input[type="checkbox"] {
   color: gray;
   width: 1em;
   height: 1em;
-  border: 0.45em solid rgb(243 244 246);
+  border: 0.45em solid rgb(243, 244, 246);
   border-radius: 0.2em;
   transform: translateY(-0.075em);
   display: grid;

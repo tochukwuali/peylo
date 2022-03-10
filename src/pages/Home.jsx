@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { IoChevronDown } from "react-icons/io5";
 import { BsPlusLg } from "react-icons/bs";
@@ -9,19 +11,25 @@ import InvoiceForm from "./InvoiceForm";
 import { useClickOutside } from '../hooks/useClickOutside'
 
 const Demo = ({ invoiceData, handleClose, handleOpen, show, setShow }) => {
-  // if (!session && !isDemo) {
-  //   router.replace("/login");
-  // }
+  
   const [filterMenu, setFilterMenu] = useState(false);
 
   const ref = useClickOutside(filterMenu, setFilterMenu)
 
+  const navigate = useNavigate()
+  const { user } = useSelector(state => state.auth)
+  
+  useEffect(() => {
+    if(!user) navigate('/login')
+  }, [user, navigate])
+  
   return (
     <section className="bg-gray-50 lg:px-30 xl:px-40 md:px-20 px-4 relative">
       <div className={`py-12 lg:px-36 ${show ? "fixed" : "relative"}`}>
         <div className="flex justify-between w-full items-center relative">
           <div>
-            <h3 className="text-4xl font-extrabold">Invoices</h3>
+            <h3>Welcome <span className="inline-block font-bold text-2xl">{user && user.user.username}</span></h3>
+            <h3 className="text-4xl mt-4 font-extrabold">Invoices</h3>
             <p className="text-gray-400 mt-4">
               There {invoiceData.length > 1 ? "are" : "is"} a total of{" "}
               {invoiceData.length}{" "}
@@ -88,7 +96,7 @@ const Demo = ({ invoiceData, handleClose, handleOpen, show, setShow }) => {
             </div>
           </div>
         </div>
-        <div className="space-y-6 mt-16">
+        <div className="space-y-6 mt-12">
           {invoiceData.map(({ id, clientName, paymentDue, total, status }) => (
             <Link
               to={`/invoice/${id}`}

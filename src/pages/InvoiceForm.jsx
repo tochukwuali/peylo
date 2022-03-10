@@ -1,8 +1,49 @@
 import { useClickOutside } from "../hooks/useClickOutside";
 import { BsTrash } from "react-icons/bs";
+import { useState } from "react";
 
 const InvoiceForm = ({ handleClose, show, setShow, children }) => {
-  const ref = useClickOutside(show, setShow)
+  const ref = useClickOutside(show, setShow);
+
+  const [formData, setFormData] = useState({
+    paymentDue: "",
+    description: "",
+    clientName: "",
+    clientEmail: "",
+    clientAddress: {
+      street: "",
+      city: "",
+      postcode: "",
+      country: "",
+    },
+    paymentTerms: "",
+    total: "",
+  });
+  // const [items, setItems] = useState([]);
+
+  const { paymentDue, description, clientEmail, clientName, clientAddress, paymentTerms } = formData;
+
+  const handleChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleAddressChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      clientAddress: {
+        ...prevState.clientAddress,
+        [e.target.name]: e.target.value,
+      },
+    }));
+  };
+
+  // const handleNewItem = () => {};
+
+  // const handleSubmit = () => {};
+
   return (
     <div
       className={`${
@@ -69,6 +110,8 @@ const InvoiceForm = ({ handleClose, show, setShow, children }) => {
               <div className="mt-0">
                 <label htmlFor="client-name">Client's Name</label>
                 <input
+                  onChange={handleChange}
+                  value={clientName}
                   type="text"
                   name="client-name"
                   className="border-gray-300 border block px-4 w-full py-2 rounded"
@@ -77,6 +120,8 @@ const InvoiceForm = ({ handleClose, show, setShow, children }) => {
               <div className="mt-4">
                 <label htmlFor="client-email">Client's Email</label>
                 <input
+                  onChange={handleChange}
+                  value={clientEmail}
                   type="text"
                   name="client-email"
                   className="border-gray-300 border block px-4 w-full py-2 rounded"
@@ -85,6 +130,8 @@ const InvoiceForm = ({ handleClose, show, setShow, children }) => {
               <div className="mt-4">
                 <label htmlFor="client-address">Street Address</label>
                 <input
+                  onChange={handleAddressChange}
+                  value={clientAddress.street}
                   type="text"
                   name="client-address"
                   className="border-gray-300 border block px-4 w-full py-2 rounded"
@@ -95,6 +142,8 @@ const InvoiceForm = ({ handleClose, show, setShow, children }) => {
               <div>
                 <label htmlFor="city">City</label>
                 <input
+                  onChange={handleAddressChange}
+                  value={clientAddress.city}
                   type="text"
                   name="city"
                   className="border-gray-300 border block px-4 w-full py-2 rounded"
@@ -103,6 +152,8 @@ const InvoiceForm = ({ handleClose, show, setShow, children }) => {
               <div>
                 <label htmlFor="country">Post Code</label>
                 <input
+                  onChange={handleAddressChange}
+                  value={clientAddress.postcode}
                   type="text"
                   name="postcode"
                   className="border-gray-300 border block px-4 w-full py-2 rounded"
@@ -111,6 +162,8 @@ const InvoiceForm = ({ handleClose, show, setShow, children }) => {
               <div>
                 <label htmlFor="country">Country</label>
                 <input
+                  onChange={handleAddressChange}
+                  value={clientAddress.country}
                   type="text"
                   name="country"
                   className="border-gray-300 border block px-4 w-full py-2 rounded"
@@ -129,6 +182,8 @@ const InvoiceForm = ({ handleClose, show, setShow, children }) => {
               <div className="mt-4">
                 <label htmlFor="client-email">Payment Terms</label>
                 <input
+                  onChange={handleChange}
+                  value={paymentTerms}
                   type="text"
                   name="client-email"
                   className="border-gray-300 border block px-4 w-full py-2 rounded"
@@ -137,6 +192,8 @@ const InvoiceForm = ({ handleClose, show, setShow, children }) => {
               <div className="mt-4">
                 <label htmlFor="client-address">Project Description</label>
                 <input
+                  onChange={handleChange}
+                  value={description}
                   type="text"
                   name="client-address"
                   className="border-gray-300 border block px-4 w-full py-2 rounded"
@@ -180,6 +237,7 @@ const InvoiceForm = ({ handleClose, show, setShow, children }) => {
                   <BsTrash />
                 </div>
               </div>
+              {}
             </div>
             <div className="w-full mt-8">
               <button className="w-full rounded-full p-3 text-gray-700 font-semibold bg-gray-100">

@@ -1,18 +1,22 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login, reset } from "../features/auth/authSlice";
+import { register, reset } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
 import ClipLoader from "react-spinners/ClipLoader";
+import { css } from "@emotion/react";
 
-const Home = () => {
+const Register = () => {
   const [formData, setformData] = useState({
+    username: "",
     email: "",
     password: "",
+    password2: "",
   });
-  const { email, password } = formData;
+
+  const { username, email, password, password2 } = formData;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,27 +47,51 @@ const Home = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const userData = {
-      identifier: email,
-      password,
-    };
-    dispatch(login(userData));
+    if (password !== password2) {
+      toast.error("Passwords do not match");
+    } else {
+      const userData = {
+        username,
+        email,
+        password,
+      };
+     
+      dispatch(register(userData));
+    }
   };
 
-  if (isLoading) {
-    return <ClipLoader size={150} />;
-  }
+  const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
+  const color = "#ff0000"
 
   return (
     <section className="lg:px-40 md:px-20 px-4 py-8 bg-gray-50 h-screen">
       <div className="flex justify-center space-x-8">
+       
         <div className="shadow-lg w-1/2 py-8 mt-12 bg-white rounded-xl">
           <div className="text-center">
-            <h3 className="text-gray-700 font-bold text-3xl">Login</h3>
+          {
+          isLoading && <ClipLoader size={150} css={override} color={color}/>
+        }
+            <h3 className="text-gray-700 font-bold text-3xl">Register</h3>
           </div>
           <div>
             <div className="mt-3 px-8 w-full">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} className="space-y-3">
+                <div>
+                  <label htmlFor="username">Username</label>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={handleChange}
+                    name="username"
+                    id="username"
+                    className="block rounded-md border border-gray-200 w-full p-3"
+                  />
+                </div>
                 <div>
                   <label htmlFor="email">Email</label>
                   <input
@@ -75,7 +103,7 @@ const Home = () => {
                     className="block rounded-md border border-gray-200 w-full p-3"
                   />
                 </div>
-                <div className="mt-3">
+                <div className="">
                   <label htmlFor="password">Password</label>
                   <input
                     type="password"
@@ -86,8 +114,21 @@ const Home = () => {
                     className="block rounded-md border border-gray-200 w-full p-3"
                   />
                 </div>
+                <div className="">
+                  <label htmlFor="password2">Confirm Password</label>
+                  <input
+                    type="password"
+                    value={password2}
+                    onChange={handleChange}
+                    name="password2"
+                    id="password2"
+                    className="block rounded-md border border-gray-200 w-full p-3"
+                  />
+                </div>
                 <div className="mt-5">
-                  <button className="bg-gray-500 border-gray-500 p-3 text-white w-full">Submit</button>
+                  <button className="bg-gray-500 border-gray-500 p-3 text-white w-full">
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
@@ -109,4 +150,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Register;
